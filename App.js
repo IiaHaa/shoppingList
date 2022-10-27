@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
-import { Header, Input, Button, ListItem } from 'react-native-elements';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
+import { Header, Input, Button, ListItem, Icon } from 'react-native-elements';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('shoppinglistdb2.db');
@@ -47,15 +47,6 @@ export default function App() {
     )
   }
 
-  const renderItem = ({ item }) => (
-    <ListItem bottomDivider>
-      <ListItem.Content>
-        <ListItem.Title>{ item.product }</ListItem.Title>
-        <ListItem.Subtitle>{ item.amount }</ListItem.Subtitle>
-      </ListItem.Content>
-    </ListItem>
-    )
-
   return (
     <View style={styles.container}>
       <Header
@@ -66,10 +57,19 @@ export default function App() {
       <Button raised icon={{name: 'save', color: '#FFFFFF'}} onPress={saveItem} title='SAVE' />
 
       <FlatList
+        ListHeaderComponent={() => <Text>Contents</Text>}
+        keyExtractor={(item) => String(item.id)}
         data={list}
-        renderItem={renderItem}
-        keyExtractor={item => item.id.toString()}
-      />
+        renderItem = {({ item }) =>
+          <ListItem bottomDivider key={String(item.id)}>
+            <ListItem.Content>
+              <ListItem.Title>{ item.product }</ListItem.Title>
+              <ListItem.Subtitle>{ item.amount }</ListItem.Subtitle>
+            </ListItem.Content>
+            <Icon type="material" name="delete" iconStyle="sharp" color="red" onPress={() => deleteItem(item.id)} />
+          </ListItem>
+        }
+      ></FlatList>
     </View>
   );
 }
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   backgroundColor: '#fff',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: 25
+  marginTop: 25,
+  color: '#000000'
  }
 });
