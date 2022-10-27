@@ -57,11 +57,12 @@ export default function App() {
       <Button raised icon={{name: 'save', color: '#FFFFFF'}} onPress={saveItem} title='SAVE' />
 
       <FlatList
+        style={styles.list}
         ListHeaderComponent={() => <Text>Contents</Text>}
         keyExtractor={(item) => String(item.id)}
         data={list}
         renderItem = {({ item }) =>
-          <ListItem bottomDivider key={String(item.id)}>
+          <ListItem bottomDivider>
             <ListItem.Content>
               <ListItem.Title>{ item.product }</ListItem.Title>
               <ListItem.Subtitle>{ item.amount }</ListItem.Subtitle>
@@ -70,17 +71,20 @@ export default function App() {
           </ListItem>
         }
       ></FlatList>
-    </View>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
  container: {
-  flex: 1,
   backgroundColor: '#fff',
   alignItems: 'center',
   justifyContent: 'center',
   marginTop: 25,
   color: '#000000'
+ },
+ list: {
+  margin: 30,
+  width: '75%'
  }
 });
